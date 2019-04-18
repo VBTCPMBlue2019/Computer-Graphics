@@ -78,6 +78,21 @@ bool loadMedia2() {
 	return success;
 }
 
+bool loadMedia3() {
+	//Loading success flag
+	bool success = true;
+
+	//Load splash image
+	gHelloWorld = SDL_LoadBMP("USSREMBLEM.bmp");
+	if (gHelloWorld == NULL)
+	{
+		printf("Unable to load image %s! SDL Error: %s\n", "USSREMBLEM.bmp", SDL_GetError());
+		success = false;
+	}
+
+	return success;
+}
+
 void close()
 {
 	//Deallocate surface
@@ -95,46 +110,72 @@ void close()
 
 int main(int argc, char* args[]) {
 	//Start up SDL and create window
-	if (!init())
-	{
-		printf("Failed to initialize!\n");
-	}
-	else
-	{
-		//Load media
-		if (!loadMedia())
+	int cntinu = 0;
+	do {
+		if (!init())
 		{
-			printf("Failed to load media!\n");
+			printf("Failed to initialize!\n");
 		}
 		else
 		{
-			int tfmenu;
-			cout << "Please select a class" << endl << " " << endl << "1 - Scout" << endl << "2 - Soldier" << endl << "3 - Pyro" << endl << "4 - Demoman" << endl << "5 - Heavy" << endl << "6 - Engineer" << endl << "7 - Medic" << endl << "8 - Sniper" << endl << "Spy" << endl;
-			cin >> tfmenu;
-
-
-			//Deallocate surface & Change Image
-			SDL_FreeSurface(gHelloWorld);
-			gHelloWorld = NULL;
-			if (tfmenu == 5) {
-				gHelloWorld = SDL_LoadBMP("POOTIS.bmp");
+			//Load media
+			if (!loadMedia())
+			{
+				printf("Failed to load media!\n");
 			}
+			else
+			{
+				int tfmenu;
+				cout << "Please select a sound" << endl << " " << endl << "1 - Scout Demon Taunt" << endl << "2 - Soldier Demon Threat" << endl << "3 - Pyro" << endl << "4 - Demoman Demonic Screaming" << endl << "5 - Heavy Sad" << endl << "6 - Engineer" << endl << "7 - Medic" << endl << "8 - Sniper Good Shot Hurty" << endl << "9 - Spy" << endl << "10 - USSR Anthem Earrape" << endl;
+				cin >> tfmenu;
 
-			//Apply the new image
-			SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
 
-			//Update the surface
-			SDL_UpdateWindowSurface(gWindow);
+				//Deallocate surface & Change Image
+				SDL_FreeSurface(gHelloWorld);
+				gHelloWorld = NULL;
+				if (tfmenu == 5) {
+					gHelloWorld = SDL_LoadBMP("POOTIS.bmp");
+				}
+				else if (tfmenu == 10) {
+					gHelloWorld = SDL_LoadBMP("USSREMBLEM.bmp");
+				}
+				//Apply the new image
+				SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
 
-			//Play Sound
-			if (tfmenu == 5) {
-				PlaySound("defopoot.wav", NULL, SND_FILENAME);
-			}
-			else if (tfmenu == 4) {
-				PlaySound("When DeadFace queues as Demoman.wav", NULL, SND_FILENAME);
+				//Update the surface
+				SDL_UpdateWindowSurface(gWindow);
+
+				//Play Sound
+				if (tfmenu == 5) {
+					PlaySound("defopoot.wav", NULL, SND_FILENAME);
+					SDL_DestroyWindow(gWindow);
+				}
+				else if (tfmenu == 4) {
+					PlaySound("When DeadFace queues as Demoman.wav", NULL, SND_FILENAME);
+					SDL_DestroyWindow(gWindow);
+				}
+				else if (tfmenu == 10) {
+					PlaySound("Soviet National Anthem (EAR RAPE)(1).wav", NULL, SND_FILENAME);
+					SDL_DestroyWindow(gWindow);
+				}
+				else if (tfmenu == 1) {
+					PlaySound("scout_revenge03.wav", NULL, SND_FILENAME);
+					SDL_DestroyWindow(gWindow);
+				}
+				else if (tfmenu == 8) {
+					PlaySound("sniper_niceshot02.wav", NULL, SND_FILENAME);
+					SDL_DestroyWindow(gWindow);
+				}
+				else if (tfmenu == 2) {
+					PlaySound("soldier_taunts07.wav", NULL, SND_FILENAME);
+					SDL_DestroyWindow(gWindow);
+				}
+				cout << "Select new?: " << endl << "0 yes 1 no" << endl;
+				cin >> cntinu;
+				
 			}
 		}
-	}
+	} while (cntinu == 0);
 	//Free resources and close SDL
 	close();
 
